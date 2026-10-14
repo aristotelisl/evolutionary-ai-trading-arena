@@ -46,8 +46,9 @@ optionally a stronger model for births. Dashboard: static site (e.g. Next.js/Ast
 - `arena/data.py` - ccxt candle fetcher + synthetic data generator for tests
 - `arena/db.py` - SQLite schema and `connect()` (agents, strategies, trades, events, llm_calls, equity_snapshots)
 - `arena/brain.py` - LLM birth: prompt -> validate -> retry with errors -> birth_check; returns every call as `LLMCall`
+- `arena/tax.py` - compute tax: `charge_llm_calls()` logs calls to llm_calls and charges cost x `COMPUTE_TAX_MULTIPLIER` (1000) to the wallet
 - `examples/*.json` - three sample genomes; `scripts/` - fetch_candles.py, run_backtest.py, try_birth.py (one real, paid birth)
-- `tests/` - 39 tests (run with `python -m pytest -q`)
+- `tests/` - 44 tests (run with `python -m pytest -q`)
 
 ## Conventions
 - Never introduce look-ahead: indicator values at bar t use only bars <= t.
@@ -62,4 +63,5 @@ optionally a stronger model for births. Dashboard: static site (e.g. Next.js/Ast
 - **Seed diversity in birth prompts** (personas, allowed indicators) so agents don't all invent the same strategy.
 - **Cap birth retries** to limit overfitting to the backtest window.
 - **Birth check should beat buy-and-hold** (or at least report it): on the Aug-Oct 2026 data all three examples passed but trailed holding the same coins by 3-8x. Also watch fees on high-frequency strategies.
+- **Engine cash vs DB cash:** the compute tax changes `agents.cash` in the DB between bars; the live loop must load the Engine's cash from the DB (DB is the source of truth), not keep its own copy.
 - **One week of live results is mostly noise:** don't read early deaths/survivals as skill.
