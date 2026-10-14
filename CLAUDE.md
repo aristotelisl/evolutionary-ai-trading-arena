@@ -55,8 +55,9 @@ optionally a stronger model for births. Dashboard: static site (e.g. Next.js/Ast
 
 ## Open design notes (to handle in the relevant later steps)
 - **Doing nothing must not be safe:** add a daily living cost so an agent can't survive by never trading.
-- **Birth check needs a minimum trade count** (e.g. the Quiet Dip Buyer example passes with only 7 trades).
+- **Birth check needs a minimum trade count** (e.g. the Quiet Dip Buyer example passed with only 7 trades on synthetic data).
 - **Calibrate the compute tax** against the $1,000 starting wallet so LLM cost matters but doesn't dominate.
 - **Seed diversity in birth prompts** (personas, allowed indicators) so agents don't all invent the same strategy.
 - **Cap birth retries** to limit overfitting to the backtest window.
+- **Birth check should beat buy-and-hold** (or at least report it): on the Aug-Oct 2026 data all three examples passed but trailed holding the same coins by 3-8x. Also watch fees on high-frequency strategies.
 - **One week of live results is mostly noise:** don't read early deaths/survivals as skill.

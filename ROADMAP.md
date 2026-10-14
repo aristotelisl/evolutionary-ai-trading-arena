@@ -7,7 +7,7 @@ Tick a box only when the step works and its tests pass.
 - [x] Simulated exchange + backtester (24 tests passing)
 - [x] Set up locally: install requirements, run the tests, run `scripts/run_backtest.py`
 - [x] Put the project on GitHub (public repo, `.gitignore` for `data/`, `.env`, `__pycache__`)
-- [ ] Fetch real candles with `scripts/fetch_candles.py` and backtest the examples on real data
+- [x] Fetch real candles with `scripts/fetch_candles.py` and backtest the examples on real data
 
 ## Milestone 1: One closed loop of life and death
 - [ ] SQLite schema: agents, strategies, trades, events, llm_calls
