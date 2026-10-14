@@ -1,0 +1,29 @@
+STRATEGY DSL REFERENCE
+Return ONLY a JSON object with keys: name, thesis, universe, timeframe, entry, exit, sizing.
+universe: subset of ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'BNB/USDT', 'XRP/USDT']
+timeframe: one of ['15m', '1h', '4h', '1d']
+entry: a condition. exit.signal (optional): a condition.
+condition: {"all": [cond,...]} | {"any": [cond,...]} | {"not": cond} | {"left": operand, "op": OP, "right": operand}
+OP: ['<', '>', '<=', '>=', 'crosses_above', 'crosses_below']  (crosses_* = crossed on this bar)
+operand: a number, or {"ind": NAME, <params>, "mult": optional 0.5-2.0 scale factor}
+
+INDICATORS (name: params [bounds] - meaning)
+  close: no params - Closing price of the bar.
+  open: no params - Opening price of the bar.
+  sma: period [2-200] - Simple moving average of close.
+  ema: period [2-200] - Exponential moving average of close.
+  rsi: period [2-50] - Relative Strength Index (0-100), Wilder smoothing.
+  bb_upper: period [5-100], std [1.0-3.5] - Upper Bollinger band: SMA + std * stdev.
+  bb_lower: period [5-100], std [1.0-3.5] - Lower Bollinger band: SMA - std * stdev.
+  atr_pct: period [2-50] - Average True Range as % of close (volatility).
+  roc: period [1-100] - Rate of change: % change in close over `period` bars.
+  highest: period [2-200] - Highest high of the PREVIOUS `period` bars (excludes current bar, so `close > highest` is a true breakout).
+  lowest: period [2-200] - Lowest low of the PREVIOUS `period` bars (excludes current bar).
+  volume_ratio: period [2-100] - Current volume divided by its `period`-bar average (>1 means above-average volume).
+  macd: fast [2-50], slow [5-150], signal [2-50] - MACD line: EMA(fast) - EMA(slow).
+  macd_signal: fast [2-50], slow [5-150], signal [2-50] - MACD signal line: EMA(signal) of the MACD line.
+
+exit (at least one): take_profit_pct [0.3-50], stop_loss_pct [0.3-30], trailing_stop_pct [0.3-30], max_hold_bars [1-500], signal (condition)
+sizing: position_pct [1-100] of equity per position, max_positions [1-5]; position_pct * max_positions <= 100
+Limits: <= 20 condition nodes, nesting depth <= 4, warmup <= 400 bars.
+Execution: long-only spot. Signals are evaluated at bar close and filled at the next bar's open. Fees ~0.1% per side plus slippage, so frequent trading is costly.

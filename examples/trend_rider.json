@@ -1,0 +1,16 @@
+{
+  "name": "Trend Rider",
+  "thesis": "Ride trends that start with a fast/slow EMA cross confirmed by MACD; let winners run with a trailing stop.",
+  "universe": ["BTC/USDT", "ETH/USDT", "SOL/USDT"],
+  "timeframe": "4h",
+  "entry": {"all": [
+    {"left": {"ind": "ema", "period": 12}, "op": "crosses_above", "right": {"ind": "ema", "period": 48}},
+    {"left": {"ind": "macd", "fast": 12, "slow": 26, "signal": 9}, "op": ">",
+     "right": {"ind": "macd_signal", "fast": 12, "slow": 26, "signal": 9}}
+  ]},
+  "exit": {
+    "trailing_stop_pct": 6,
+    "signal": {"left": {"ind": "ema", "period": 12}, "op": "crosses_below", "right": {"ind": "ema", "period": 48}}
+  },
+  "sizing": {"position_pct": 30, "max_positions": 3}
+}

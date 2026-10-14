@@ -1,0 +1,535 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ArenaStrategy",
+  "type": "object",
+  "required": [
+    "name",
+    "thesis",
+    "universe",
+    "timeframe",
+    "entry",
+    "exit",
+    "sizing"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280
+    },
+    "universe": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "BTC/USDT",
+          "ETH/USDT",
+          "SOL/USDT",
+          "BNB/USDT",
+          "XRP/USDT"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true
+    },
+    "timeframe": {
+      "enum": [
+        "15m",
+        "1h",
+        "4h",
+        "1d"
+      ]
+    },
+    "entry": {
+      "$ref": "#/$defs/condition"
+    },
+    "exit": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "take_profit_pct": {
+          "type": "number",
+          "minimum": 0.3,
+          "maximum": 50
+        },
+        "stop_loss_pct": {
+          "type": "number",
+          "minimum": 0.3,
+          "maximum": 30
+        },
+        "trailing_stop_pct": {
+          "type": "number",
+          "minimum": 0.3,
+          "maximum": 30
+        },
+        "max_hold_bars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "signal": {
+          "$ref": "#/$defs/condition"
+        }
+      }
+    },
+    "sizing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position_pct",
+        "max_positions"
+      ],
+      "properties": {
+        "position_pct": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_positions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      }
+    }
+  },
+  "$defs": {
+    "operand": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "close"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            }
+          },
+          "required": [
+            "ind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "open"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            }
+          },
+          "required": [
+            "ind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "sma"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 200
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "ema"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 200
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "rsi"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "bb_upper"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 100
+            },
+            "std": {
+              "type": "number",
+              "minimum": 1.0,
+              "maximum": 3.5
+            }
+          },
+          "required": [
+            "ind",
+            "period",
+            "std"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "bb_lower"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 100
+            },
+            "std": {
+              "type": "number",
+              "minimum": 1.0,
+              "maximum": 3.5
+            }
+          },
+          "required": [
+            "ind",
+            "period",
+            "std"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "atr_pct"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "roc"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "highest"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 200
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "lowest"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 200
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "volume_ratio"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "ind",
+            "period"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "macd"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "fast": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            },
+            "slow": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 150
+            },
+            "signal": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "ind",
+            "fast",
+            "slow",
+            "signal"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ind": {
+              "const": "macd_signal"
+            },
+            "mult": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 2.0
+            },
+            "fast": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            },
+            "slow": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 150
+            },
+            "signal": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "ind",
+            "fast",
+            "slow",
+            "signal"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/condition"
+              },
+              "minItems": 1,
+              "maxItems": 6
+            }
+          },
+          "required": [
+            "all"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/condition"
+              },
+              "minItems": 1,
+              "maxItems": 6
+            }
+          },
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/condition"
+            }
+          },
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "op",
+            "right"
+          ],
+          "properties": {
+            "left": {
+              "$ref": "#/$defs/operand"
+            },
+            "op": {
+              "enum": [
+                "<",
+                ">",
+                "<=",
+                ">=",
+                "crosses_above",
+                "crosses_below"
+              ]
+            },
+            "right": {
+              "$ref": "#/$defs/operand"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

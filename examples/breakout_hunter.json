@@ -1,0 +1,13 @@
+{
+  "name": "Breakout Hunter",
+  "thesis": "Enter when price breaks a 48-bar high on heavy volume in a calm market; cut losers fast.",
+  "universe": ["SOL/USDT", "XRP/USDT", "BNB/USDT"],
+  "timeframe": "1h",
+  "entry": {"all": [
+    {"left": {"ind": "close"}, "op": ">", "right": {"ind": "highest", "period": 48}},
+    {"left": {"ind": "volume_ratio", "period": 24}, "op": ">", "right": 1.8},
+    {"not": {"left": {"ind": "atr_pct", "period": 14}, "op": ">", "right": 3.0}}
+  ]},
+  "exit": {"stop_loss_pct": 1.5, "take_profit_pct": 6, "max_hold_bars": 72},
+  "sizing": {"position_pct": 33, "max_positions": 3}
+}
