@@ -11,7 +11,7 @@ Tick a box only when the step works and its tests pass.
 
 ## Milestone 1: One closed loop of life and death
 - [x] SQLite schema: agents, strategies, trades, events, llm_calls, equity_snapshots
-- [ ] Brain service: birth prompt -> validate -> retry with errors -> birth_check backtest
+- [x] Brain service: birth prompt -> validate -> retry with errors -> birth_check backtest
 - [ ] Compute tax: log every LLM call's tokens/cost and charge the agent's wallet
 - [ ] Live loop: every candle close, refresh data and step each agent's Engine; persist state
 - [ ] Daily reflection: small, bounded strategy tweaks (or "no change")

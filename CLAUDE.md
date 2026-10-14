@@ -45,8 +45,9 @@ optionally a stronger model for births. Dashboard: static site (e.g. Next.js/Ast
 - `arena/engine.py` - simulated exchange `Engine` (same code for backtest and live), `backtest()`, `birth_check()`
 - `arena/data.py` - ccxt candle fetcher + synthetic data generator for tests
 - `arena/db.py` - SQLite schema and `connect()` (agents, strategies, trades, events, llm_calls, equity_snapshots)
-- `examples/*.json` - three sample genomes; `scripts/` - fetch_candles.py, run_backtest.py
-- `tests/` - 30 tests (run with `python -m pytest -q`)
+- `arena/brain.py` - LLM birth: prompt -> validate -> retry with errors -> birth_check; returns every call as `LLMCall`
+- `examples/*.json` - three sample genomes; `scripts/` - fetch_candles.py, run_backtest.py, try_birth.py (one real, paid birth)
+- `tests/` - 39 tests (run with `python -m pytest -q`)
 
 ## Conventions
 - Never introduce look-ahead: indicator values at bar t use only bars <= t.
