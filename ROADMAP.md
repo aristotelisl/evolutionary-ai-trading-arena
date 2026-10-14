@@ -10,7 +10,7 @@ Tick a box only when the step works and its tests pass.
 - [x] Fetch real candles with `scripts/fetch_candles.py` and backtest the examples on real data
 
 ## Milestone 1: One closed loop of life and death
-- [ ] SQLite schema: agents, strategies, trades, events, llm_calls
+- [x] SQLite schema: agents, strategies, trades, events, llm_calls, equity_snapshots
 - [ ] Brain service: birth prompt -> validate -> retry with errors -> birth_check backtest
 - [ ] Compute tax: log every LLM call's tokens/cost and charge the agent's wallet
 - [ ] Live loop: every candle close, refresh data and step each agent's Engine; persist state
@@ -21,6 +21,7 @@ Tick a box only when the step works and its tests pass.
 
 ## Milestone 2 (later)
 - [ ] Reproduction from successful agents, multiple lineages, family tree, risk-adjusted fitness
+- [ ] New founders ("immigrants"): occasionally born from scratch with no parent, e.g. every Nth birth, when one lineage dominates, or when no agent is fit to reproduce
 
 ## Milestone 3 (later)
 - [ ] Model choice as an evolved trait, sandboxed code strategies, "seasons"
